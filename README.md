@@ -15,3 +15,18 @@
    ```bash
    docker build -t lab1-app .
    ```
+
+````
+
+
+2. Запустити контейнер:
+```bash
+docker run -p 3000:3000 lab1-app
+
+````
+
+## Команда запуску тестів
+
+```bash
+npm test
+```
