@@ -32,7 +32,7 @@ stages:
 
 - stage: PushToDockerHub
   displayName: 'Docker Build and Push Stage'
-  dependsOn: Build
+  dependsOn: BuildAndTest
   jobs:
   - job: Push
     displayName: 'Build and push Docker image'
