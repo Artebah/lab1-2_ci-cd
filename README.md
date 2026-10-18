@@ -30,3 +30,5 @@ docker run -p 3000:3000 lab1-app
 ```bash
 npm test
 ```
+
+add test comment
