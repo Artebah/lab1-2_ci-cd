@@ -4,45 +4,45 @@ trigger:
       - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "MyAgentPool"
 
 variables:
-  dockerRegistryServiceConnection: 'dockerhub-connection' # Назва твого Service Connection
-  imageRepository: 'lab1-cicd'                              # Назва твого репозиторію в Docker Hub
-  containerRegistry: 'docker.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: 'latest'
+  dockerRegistryServiceConnection: "dockerhub-connection" # Назва твого Service Connection
+  imageRepository: "lab1-cicd" # Назва твого репозиторію в Docker Hub
+  containerRegistry: "docker.io"
+  dockerfilePath: "$(Build.SourcesDirectory)/Dockerfile"
+  tag: "latest"
 
 stages:
-- stage: BuildAndTest
-  displayName: 'Build and Test Stage'
-  jobs:
-  - job: Build
-    displayName: 'Run tests and build'
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '18.x'
-      displayName: 'Install Node.js'
+  - stage: BuildAndTest
+    displayName: "Build and Test Stage"
+    jobs:
+      - job: Build
+        displayName: "Run tests and build"
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "18.x"
+            displayName: "Install Node.js"
 
-    - script: |
-        npm install
-        npm test
-      displayName: 'Install dependencies and run unit tests'
+          - script: |
+              npm install
+              npm test
+            displayName: "Install dependencies and run unit tests"
 
-- stage: PushToDockerHub
-  displayName: 'Docker Build and Push Stage'
-  dependsOn: BuildAndTest
-  jobs:
-  - job: Push
-    displayName: 'Build and push Docker image'
-    steps:
-    - task: Docker@2
-      displayName: 'Build and push an image to Docker Hub'
-      inputs:
-        command: 'buildAndPush'
-        repository: '$(imageRepository)'
-        dockerfile: '$(dockerfilePath)'
-        containerRegistry: '$(dockerRegistryServiceConnection)'
-        tags: |
-          $(tag)
+  - stage: PushToDockerHub
+    displayName: "Docker Build and Push Stage"
+    dependsOn: BuildAndTest
+    jobs:
+      - job: Push
+        displayName: "Build and push Docker image"
+        steps:
+          - task: Docker@2
+            displayName: "Build and push an image to Docker Hub"
+            inputs:
+              command: "buildAndPush"
+              repository: "$(imageRepository)"
+              dockerfile: "$(dockerfilePath)"
+              containerRegistry: "$(dockerRegistryServiceConnection)"
+              tags: |
+                $(tag)
