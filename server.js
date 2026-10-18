@@ -17,7 +17,7 @@ app.get("/api/items", (req, res) => {
 
 app.get("/api/items/:id", (req, res) => {
   const item = items.find((i) => i.id === parseInt(req.params.id));
-  if (!item) return res.status(404).json({ error: "Item not found" });
+  if (!item) return res.status(404).json({ error: "Item not found!" });
   res.status(200).json(item);
 });
 
@@ -36,7 +36,7 @@ app.post("/api/items", (req, res) => {
 
 app.put("/api/items/:id", (req, res) => {
   const item = items.find((i) => i.id === parseInt(req.params.id));
-  if (!item) return res.status(404).json({ error: "Item not found" });
+  if (!item) return res.status(404).json({ error: "Item not found!" });
 
   const { name, description } = req.body;
   if (name) item.name = name;
@@ -47,7 +47,7 @@ app.put("/api/items/:id", (req, res) => {
 
 app.delete("/api/items/:id", (req, res) => {
   const index = items.findIndex((i) => i.id === parseInt(req.params.id));
-  if (index === -1) return res.status(404).json({ error: "Item not found" });
+  if (index === -1) return res.status(404).json({ error: "Item not found!" });
 
   const deletedItem = items.splice(index, 1);
   res.status(200).json(deletedItem[0]);
