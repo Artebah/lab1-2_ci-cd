@@ -8,7 +8,7 @@ pool:
 
 variables:
   dockerRegistryServiceConnection: "dockerhub-connection" # Назва твого Service Connection
-  imageRepository: "lab1-cicd" # Назва твого репозиторію в Docker Hub
+  imageRepository: "artebah/lab1-cicd" # Назва твого репозиторію в Docker Hub
   containerRegistry: "docker.io"
   dockerfilePath: "$(Build.SourcesDirectory)/Dockerfile"
   tag: "latest"
