@@ -37,28 +37,30 @@ stages:
       - job: Push
         displayName: "Build and push Docker image"
         steps:
-          # 1. Авторизуемся в Docker Hub через Service Connection
+          # 1. Логинимся в Docker Hub
           - task: Docker@2
             displayName: "Login to Docker Hub"
             inputs:
               containerRegistry: "$(dockerRegistryServiceConnection)"
               command: "login"
 
-          # 2. Собираем образ локально (без попытки пушить автоматически)
+          # 2. Собираем образ (ОБЯЗАТЕЛЬНО добавили containerRegistry, чтобы Docker мог скачать node:18-alpine)
           - task: Docker@2
             displayName: "Build Docker image"
             inputs:
               command: "build"
               repository: "$(imageRepository)"
               dockerfile: "$(dockerfilePath)"
+              containerRegistry: "$(dockerRegistryServiceConnection)"
               tags: |
                 $(tag)
 
-          # 3. Отправляем собранный образ в Docker Hub явной командой push
+          # 3. Отправляем образ в Docker Hub
           - task: Docker@2
             displayName: "Push Docker image"
             inputs:
               command: "push"
               repository: "$(imageRepository)"
+              containerRegistry: "$(dockerRegistryServiceConnection)"
               tags: |
                 $(tag)
