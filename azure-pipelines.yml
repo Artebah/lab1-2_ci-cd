@@ -37,17 +37,28 @@ stages:
       - job: Push
         displayName: "Build and push Docker image"
         steps:
+          # 1. Авторизуемся в Docker Hub через Service Connection
           - task: Docker@2
+            displayName: "Login to Docker Hub"
             inputs:
-              containerRegistry: "dockerhub-connection"
+              containerRegistry: "$(dockerRegistryServiceConnection)"
               command: "login"
 
+          # 2. Собираем образ локально (без попытки пушить автоматически)
           - task: Docker@2
-            displayName: "Build and push an image to Docker Hub"
+            displayName: "Build Docker image"
             inputs:
-              command: "buildAndPush"
+              command: "build"
               repository: "$(imageRepository)"
               dockerfile: "$(dockerfilePath)"
-              containerRegistry: "$(dockerRegistryServiceConnection)"
+              tags: |
+                $(tag)
+
+          # 3. Отправляем собранный образ в Docker Hub явной командой push
+          - task: Docker@2
+            displayName: "Push Docker image"
+            inputs:
+              command: "push"
+              repository: "$(imageRepository)"
               tags: |
                 $(tag)
